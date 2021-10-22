@@ -11,8 +11,8 @@
         }
 
         public IApplicationController RegisterView<TView, TImplementation>()
-            where TImplementation : class, TView 
             where TView : IView
+            where TImplementation : class, TView
         {
             _container.Register<TView, TImplementation>();
             return this;
@@ -34,19 +34,23 @@
         public void Run<TPresenter>() where TPresenter : class, IPresenter
         {
             if (!_container.IsRegistered<TPresenter>())
+            {
                 _container.Register<TPresenter>();
-            
+            }
+
             var presenter = _container.Resolve<TPresenter>();
             presenter.Run();
         }
 
-        public void Run<TPresenter, TArgumnent>(TArgumnent argumnent) where TPresenter : class, IPresenter<TArgumnent>
+        public void Run<TPresenter, TArgument>(TArgument argument) where TPresenter : class, IPresenter<TArgument>
         {
             if (!_container.IsRegistered<TPresenter>())
+            {
                 _container.Register<TPresenter>();
+            }
 
             var presenter = _container.Resolve<TPresenter>();
-            presenter.Run(argumnent);
+            presenter.Run(argument);
         }
     }
 }
